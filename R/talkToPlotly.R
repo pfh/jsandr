@@ -5,10 +5,10 @@
 #' @import htmlwidgets
 #'
 #' @export
-talkToPlotly <- function(plotlyObject, dragmode="select", webGL=TRUE, width=NULL, height=NULL, elementId=NULL) {
+talkToPlotly <- function(plotlyObject, dragmode="select", webGL=TRUE, unselectedColor="#cccccc", width=NULL, height=NULL, elementId=NULL) {
     
     if (ggplot2::is.ggplot(plotlyObject))
-        plotlyObject <- plotly::ggplotly(plotlyObject)
+        plotlyObject <- plotly::ggplotly(plotlyObject, tooltip="text")
        
     if (webGL)
         plotlyObject <- plotly::toWebGL(plotlyObject)
@@ -27,6 +27,12 @@ talkToPlotly <- function(plotlyObject, dragmode="select", webGL=TRUE, width=NULL
     }
     if (warn) 
         warning("talkToPlotly does not allow linked brushing of grouped data.")
+        
+    if (!is.null(unselectedColor)) {
+        for(i in seq_along(x$data)) {
+            x$data[[i]]$unselected$marker$color <- unselectedColor
+        }
+    }
     
     dependencies <- c(
         crosstalk::crosstalkLibs(),
