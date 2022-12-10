@@ -1,1 +1,7 @@
 ^LICENSE\.md$
+^doc$
+^Meta$
+^vignettes/articles$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

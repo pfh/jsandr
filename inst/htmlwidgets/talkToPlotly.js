@@ -99,7 +99,7 @@ HTMLWidgets.widget({
             
             Plotly.react(el, newTraces, layout, config);
             if (firstTime) {
-                //el.on("plotly_selecting", onSelectionChange);
+                //el.on("plotly_selecting", onSelectionChange); //Produces inconsistent state if no points selected.
                 el.on("plotly_selected", onSelectionChange);
                 el.on("plotly_deselect", onSelectionChange);
             }

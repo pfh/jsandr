@@ -5,7 +5,7 @@
 #' @import htmlwidgets
 #'
 #' @export
-talkToPlotly <- function(plotlyObject, dragmode="select", webGL=TRUE, unselectedColor="#cccccc", width=NULL, height=NULL, elementId=NULL) {
+talkToPlotly <- function(plotlyObject, dragmode="select", webGL=TRUE, unselectedColor="#bbbbbb", width=NULL, height=NULL, elementId=NULL) {
     
     if (ggplot2::is.ggplot(plotlyObject))
         plotlyObject <- plotly::ggplotly(plotlyObject, tooltip="text")

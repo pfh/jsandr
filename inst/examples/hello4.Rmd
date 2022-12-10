@@ -1,0 +1,14 @@
+--- 
+title: Hello world
+---
+
+```{js}
+function update() {
+    document.getElementById("output").innerText = 
+        "Hello world from Javascript!";
+}
+
+window.addEventListener("load", update);
+```
+
+<div id="output"></div>

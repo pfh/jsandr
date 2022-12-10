@@ -1,0 +1,9 @@
+--- 
+title: Hello world
+---
+
+<div id="output"></div>
+
+```{js}
+document.getElementById("output").innerText = "Hello world from Javascript!";
+```

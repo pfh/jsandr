@@ -1,0 +1,81 @@
+---
+title: "Hello world"
+---
+
+**Text editors:** You will need a text editor. Since we're going to be using R, it will be convenient to use [RStudio](https://posit.co/download/rstudio-desktop/) as a text editor. [VS Code](https://code.visualstudio.com/) is another currently popular choice. 
+
+
+# HTML
+
+Using a text editor, put the code below in a file called `hello1.html`. 
+
+```
+<!doctype html>
+<meta charset="utf-8">
+<title>Hello world</title>
+```
+
+Open the file in your web browser. One way to do this is by entering the URL [`file:///`](file:///) in your browser and navigating to the file you created.
+
+
+# HTML + Javascript
+
+HTML can include code written in Javascript.
+
+Put the code below in a file called `hello2.html`.
+
+```
+<!doctype html>
+<meta charset="utf-8">
+<title>Hello world</title>
+
+<div id="output"></div>
+
+<script>
+document.getElementById("output").innerText = "Hello world from Javascript!";
+</script>
+```
+
+
+# Rmarkdown + Javascript
+
+If your data is most easily accessible via R, you might write an [R Markdown](https://rmarkdown.rstudio.com/) document containing both R and Javascript code. Any R code runs when the document is knitted. Any Javascript code runs as the resulting HTML file is loaded in your web browser.
+
+Create a file called `hello2.Rmd` and knit it with `rmarkdown::render("hello2.Rmd")`.
+
+````
+--- 
+title: Hello world
+---
+
+<div id="output"></div>
+
+`r ''````{js}
+document.getElementById("output").innerText = "Hello world from Javascript!";
+```
+````
+
+# Delay Javascript until document loaded
+
+I like to be able to read and understand a document from top to bottom, so I like to put outputs below the code and inputs that define them.
+
+Also here I introduce a code pattern of writing an [idempotent][1] `update()` function which is called whenever needed to update the outputs. This will help us write correct but sometimes inefficient code.
+
+[1]:  https://stackoverflow.com/questions/1077412/what-is-an-idempotent-operation
+
+````
+--- 
+title: Hello world
+---
+
+`r ''````{js}
+function update() {
+    document.getElementById("output").innerText = 
+        "Hello world from Javascript!";
+}
+
+window.addEventListener("load", update);
+```
+
+<div id="output"></div>
+````

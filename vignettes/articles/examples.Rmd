@@ -1,0 +1,70 @@
+---
+title: "Examples"
+---
+
+<style>
+body {
+    max-width: 100%;
+}
+
+#main, .container { 
+    width: 1400px;
+    max-width: 1400px; 
+}
+</style>
+
+```{r warning=FALSE,message=FALSE}
+# 2022-12-10 Note: dev version of ggbeeswarm is needed
+
+library(crosstalk)
+library(htmltools)
+library(plotly)
+library(tidyverse)
+library(GGally)
+library(ggbeeswarm)
+library(geozoo)
+library(langevitour)
+library(jsandr)
+
+x <- as.data.frame(conic.spiral.nautilus(n=5000, b=1)$points)
+s <- SharedData$new(x)
+
+beeswarm_density <- function(data,mapping) {
+    ggplot(data,mapping) + 
+        geom_beeswarm(aes(y=factor(0)),size=0.5,stroke=0,side=1) +
+        coord_cartesian(ylim=c(1,4))
+}
+
+p <- ggpairs(
+    s,
+    diag=list(continuous=beeswarm_density),
+    lower=list(continuous = wrap("points", size=0.5,stroke=0)))
+
+w <- ggplotly(p, tooltip="text") |> highlight(on="plotly_selected", off="plotly_deselect")
+
+lw <- langevitour(x, link=s, pointSize=2, width=600, height=600)
+
+let1(groupName = s$groupName())
+```
+
+```{js}
+let handle = new crosstalk.SelectionHandle();
+handle.setGroup(groupName);
+
+function update() {
+    document.getElementById("out").innerText = 'Javascript says: You\'ve selected '+(handle.value||[]).length+' points.';
+}
+
+handle.on("change", update);
+window.addEventListener("load", update);
+```
+
+```{r}
+browsable(div(style="display: grid; grid-template-columns: 1fr 1fr 1fr;",
+    talkToPlotly(w, width="600", height="600", webGL=FALSE),
+    lw, 
+    div(id="out")))
+```
+
+
+
