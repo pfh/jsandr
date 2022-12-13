@@ -5,7 +5,7 @@
 #' @import htmlwidgets
 #'
 #' @export
-talkToPlotly <- function(plotlyObject, dragmode="select", webGL=TRUE, unselectedColor="#bbbbbb", width=NULL, height=NULL, elementId=NULL) {
+talkToPlotly <- function(plotlyObject, dragmode="select", webGL=TRUE, unselectedColor="#bbbbbb", markerLineWidth=0, width=NULL, height=NULL, elementId=NULL) {
     
     if (ggplot2::is.ggplot(plotlyObject))
         plotlyObject <- plotly::ggplotly(plotlyObject, tooltip="text")
@@ -17,6 +17,12 @@ talkToPlotly <- function(plotlyObject, dragmode="select", webGL=TRUE, unselected
     
     if (!is.null(dragmode))
         x$layout$dragmode <- dragmode
+    
+    if (!is.null(markerLineWidth)) {
+        for(i in seq_along(x$data)) {
+            x$data[[i]]$marker$line$width <- markerLineWidth
+        }
+    }
     
     warn <- FALSE
     for(i in seq_along(x$data)) {
@@ -37,7 +43,7 @@ talkToPlotly <- function(plotlyObject, dragmode="select", webGL=TRUE, unselected
     dependencies <- c(
         crosstalk::crosstalkLibs(),
         Filter(
-            \(item) item$name == "plotly-main", 
+            \(item) item$name %in% c("plotly-main","plotly-htmlwidgets-css"), 
             plotlyObject$dependencies))
 
     # create widget
