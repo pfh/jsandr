@@ -1,0 +1,41 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Fetch quest</title>
+
+<pre id="output"></pre>
+
+<script>
+
+let output = document.getElementById("output");
+function say(text) { 
+    output.innerText += text+"\n"; 
+}
+
+// Fetch using fetch()
+
+async function fetchText() {
+    try {
+        let response = await fetch("fetch.json");
+        say("fetch received response, now getting data");
+        let data = JSON.parse(await response.text());
+        say("fetch: "+JSON.stringify(data));
+    } catch(e) {
+        say("fetch failed: "+e)
+    }
+}
+
+fetchText();
+
+
+// Fetch using the JSONP hack
+
+function jsonpReceiver(x) { 
+    say("JSONP: "+JSON.stringify(x)); 
+}
+
+let script = document.createElement("script");
+script.src = "fetch.js";
+document.head.appendChild(script);
+document.head.removeChild(script);
+
+</script>

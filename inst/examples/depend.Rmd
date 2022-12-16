@@ -1,0 +1,29 @@
+---
+title: Test dependency
+---
+
+```{r}
+# Similar to using
+# <script src="https://cdn.plot.ly/plotly-2.16.1.min.js"></script>
+# but downloads the script so rmarkdown can include it in or 
+# alongside the HTML file and we obtain a fully self-contained result.
+
+jsandr::depend("plotly-main","2.16.4","https://cdn.plot.ly/plotly-2.16.4.min.js")
+```
+
+
+```{js}
+function update() {
+    let n = document.getElementById("anumber").value;
+    Plotly.react(
+        document.getElementById("output"),
+        [{x:[1,2,3],y:[n,n*n,n*n*n]}],
+    );
+}
+
+window.addEventListener("load", update)
+```
+
+n = <input id=anumber type=number value=1 oninput="update()"/>
+
+<div id=output></div>

@@ -59,7 +59,7 @@ document.getElementById("output").innerText = "Hello world from Javascript!";
 
 I like to be able to read and understand a document from top to bottom, so I like to put outputs below the code and inputs that define them.
 
-Also here I introduce a code pattern of writing an [idempotent][1] `update()` function which is called whenever needed to update the outputs. This will help us write correct but sometimes inefficient code.
+Also here I introduce a code pattern of writing an [idempotent][1] `update()` function which is called whenever needed to update the outputs. This will help us write correct (but sometimes inefficient) code.
 
 [1]:  https://stackoverflow.com/questions/1077412/what-is-an-idempotent-operation
 

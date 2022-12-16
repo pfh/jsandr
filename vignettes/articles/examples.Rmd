@@ -84,7 +84,7 @@ shared <- SharedData$new(completePenguins)
 p1 <- ggplot(shared)+aes(x=bill_length_mm,y=bill_depth_mm,color=species)+geom_point()
 p2 <- ggplot(shared)+aes(x=bill_length_mm,y=bill_depth_mm,color=sex,group=sex)+geom_col() #geom_line() #geom_tile(width=1, height=1)+geom_point()
 
-p2 <- ggplot(shared)+aes(x=round(bill_length_mm),y=1,fill=sex)+geom_col() ; p2
+p2 <- ggplot(shared)+aes(x=round(bill_length_mm),y=1,fill=sex)+geom_col()
 
 
 p2 <- ggplot(shared)+aes(x=bill_length_mm,y=bill_depth_mm,fill=flipper_length_mm)+geom_tile(width=1,height=1)
