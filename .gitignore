@@ -1,3 +1,5 @@
+.Rprofile
+notes.txt
 inst/examples/hello3.html
 inst/examples/hello4.html
 inst/examples/depend.html

@@ -1,0 +1,36 @@
+---
+title: "Dependencies"
+---
+
+Say we want to use a certain module in Javascript in an rmarkdown document. We could include it with:
+
+```
+<script src="https://unpkg.com/svd-js@1.1.1/build-umd/svd-js.min.js"></script>
+```
+
+However this would mean the document is no longer self contained.
+
+The htmltools R package provides a way to specify dependencies that are required for HTML objects. jsandr uses this to provide a function, `depend()`, that downloads a Javascript file from a URL (if it is not already cached) and then creates an empty HTML object that depends on it.
+
+```{r setup}
+library(jsandr)
+
+depend("https://unpkg.com/svd-js@1.1.1/build-umd/svd-js.min.js")
+```
+
+Now in Javascript we can use the module.
+
+```{js}
+document.write(JSON.stringify( 
+    SVDJS.SVD([[1,0,0],[0,2,0],[0,0,3]])
+));
+```
+
+## Warning
+
+If you are using a commonly used module, and also using some htmlwidgets, you might accidentally load a different version of some module.
+
+Check dependencies of a widget with `htmltools::findDependencies(widget)`.
+
+You can rely on the widget to load the dependencies, or you can force a more recent version by providing an appropriate `name=` and `version=` to `depend`. (htmltools chooses the most recent version if there are dependencies on multiple versions of a module with the same name!)
+

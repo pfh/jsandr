@@ -9,6 +9,7 @@ talkToPlotly(
   dragmode = "select",
   webGL = TRUE,
   unselectedColor = "#bbbbbb",
+  markerLineWidth = 0,
   width = NULL,
   height = NULL,
   elementId = NULL

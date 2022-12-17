@@ -8,7 +8,7 @@ title: Test dependency
 # but downloads the script so rmarkdown can include it in or 
 # alongside the HTML file and we obtain a fully self-contained result.
 
-jsandr::depend("plotly-main","2.16.4","https://cdn.plot.ly/plotly-2.16.4.min.js")
+jsandr::depend("https://cdn.plot.ly/plotly-2.16.4.min.js","plotly-main","2.16.4")
 ```
 
 

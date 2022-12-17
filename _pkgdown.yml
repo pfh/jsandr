@@ -1,4 +1,5 @@
 url: ~
 template:
     bootstrap: 5
-
+home:
+    title: "jsandr: smoothly working between Javascript and R"

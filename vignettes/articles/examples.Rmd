@@ -2,53 +2,44 @@
 title: "Examples"
 ---
 
-<style>
-body {
-    max-width: 100%;
-}
+## Crosstalk and Javascript
 
-#main, .container { 
-    width: 1400px;
-    max-width: 1400px; 
-}
-</style>
+Here I demonstrate:
+
+* `let()` and `let1()` to send data to Javascript.
+* `talkToPlotly()` to tweak plotly-crosstalk interaction.
+* Accessing a crosstalk selection from Javascript.
+* Laying out widgets using a `display: grid` styled div.
+
+First create some widgets:
 
 ```{r warning=FALSE,message=FALSE}
-# 2022-12-10 Note: dev version of ggbeeswarm is needed
-
 library(crosstalk)
 library(htmltools)
 library(plotly)
 library(tidyverse)
 library(GGally)
-library(ggbeeswarm)
 library(geozoo)
 library(langevitour)
 library(jsandr)
 
-x <- as.data.frame(conic.spiral.nautilus(n=5000, b=1)$points)
-s <- SharedData$new(x)
+df <- as.data.frame(conic.spiral.nautilus(n=5000, b=1)$points)
+shared <- SharedData$new(df)
 
-beeswarm_density <- function(data,mapping) {
-    ggplot(data,mapping) + 
-        geom_beeswarm(aes(y=factor(0)),size=0.5,stroke=0,side=1) +
-        coord_cartesian(ylim=c(1,4))
-}
+p1 <- ggplot(shared)+aes(x=V2,y=V1)+geom_point()
+p2 <- ggplot(shared)+aes(x=V2,y=V3)+geom_point()
 
-diag <- list(continuous=beeswarm_density)
-lower <- list(continuous = wrap("points", size=0.5,stroke=0))
+# Convert ggplot to plotly with talkToPlotly (with some tweaks compared to ggplotly)
+w1 <- talkToPlotly(p1, width="400", height="400")
+w2 <- talkToPlotly(p2, width="400", height="400")
 
-p <- ggpairs(
-    s,
-    diag=diag,
-    lower=lower)
+wLangevitour <- langevitour(df, link=shared, pointSize=2, width="500", height="600")
 
-w <- ggplotly(p, tooltip="text") |> highlight(on="plotly_selected", off="plotly_deselect")
-
-lw <- langevitour(x, link=s, pointSize=2, width=600, height=600)
-
-let1(groupName = s$groupName())
+# Tell Javascript the crosstalk group name.
+let1(groupName = shared$groupName())
 ```
+
+Javascript code:
 
 ```{js}
 let handle = new crosstalk.SelectionHandle();
@@ -62,34 +53,13 @@ handle.on("change", update);
 window.addEventListener("load", update);
 ```
 
-```{r}
-browsable(div(style="display: grid; grid-template-columns: 1fr 1fr 1fr;",
-    talkToPlotly(w, width="600", height="600", webGL=FALSE),
-    lw, 
-    div(id="out")))
-```
-
-
+Show the widgets, and provide an output element for the Javascript:
 
 ```{r}
-library(palmerpenguins)
-
-completePenguins <- slice_sample( na.omit(penguins), prop=1 )
-scale <- apply(completePenguins[,3:6], 2, sd)*4
-colors <- scales::hue_pal()(3)
-
-# crosstalk object that allows widgets to be linked
-shared <- SharedData$new(completePenguins)
-
-p1 <- ggplot(shared)+aes(x=bill_length_mm,y=bill_depth_mm,color=species)+geom_point()
-p2 <- ggplot(shared)+aes(x=bill_length_mm,y=bill_depth_mm,color=sex,group=sex)+geom_col() #geom_line() #geom_tile(width=1, height=1)+geom_point()
-
-p2 <- ggplot(shared)+aes(x=round(bill_length_mm),y=1,fill=sex)+geom_col()
-
-
-p2 <- ggplot(shared)+aes(x=bill_length_mm,y=bill_depth_mm,fill=flipper_length_mm)+geom_tile(width=1,height=1)
-
-ggplotly(p2) |> highlight(on="plotly_selected", off="plotly_deselect")
-
-devtools::load_all();browsable(div(talkToPlotly(p1, elementId="p1"), talkToPlotly(p2, elementId="p2")))
+browsable(div(
+    style="display: grid; grid-template-columns: 0fr 1fr;",
+    w1,            w2,
+    wLangevitour,  div(id="out")
+    ))
 ```
+

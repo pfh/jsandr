@@ -14,7 +14,10 @@ Timeline:
 
 Principles:
 
-* Results appear below all the code necessary to create it. We are not creating the Knuth/Observable literate programming hairball. Have to defer JS execution until relevant DOM element exists.
+* Results appear below all the code necessary to create it. 
+    * Have to defer JS execution until relevant DOM element exists.
+    * Donald Knuth's original concept of literate programming allowed code to be presented in an arbitrary order. Personal opinion: not a good idea.
+    * [Observable](https://observablehq.com/) also allows things to be presented out of order. Personal opinion: many things about Observable feel uncomfortable to me.
 * Results are a function of inputs. The state of the system is fully captured by the state of the inputs.
 * The simplest correct way to implement this is using an idempotent update function that is called any time an input changes. Finer grained options exist: multiple stages of update, libraries such as react.
 * BUT the user making a selection is an event. The selection does not change if the data under it changes in future. You might need to make sure the right type of state is stashed somewhere, eg managed by crosstalk. You might need to fight your tools to achieve this.
@@ -30,20 +33,17 @@ Principles:
 * [crosstalk]. Your Javascript code will be able to access crosstalk selections.
 * [r2d3] has similar goals to jsandr: making it easy to write Javascript widgets that work with R.
 
-The conventional R representation of tabular data is a list of vectors (i.e. a data frame or tibble). Each vector is a column.
-
 ## Javascript to know about
-
-The conventional Javascript representation of tabular data is an array of objects. Each object is a row.
 
 * Learn some HTML.
 * Learn some Javascript. Modern Javascript is pretty nice, if you stick to the good bits.
-    * [The Modern Javascript Tutorial](https://javascript.info/) by Ilya Kantor looks good.
+    * [The Modern Javascript Tutorial](https://javascript.info/) by Ilya Kantor looks good to me.
     * Many tutorial websites exist if you want more hand-holding, such as [codecademy](https://www.codecademy.com/).
 * Learn some CSS styling to lay out your page. Style some divs,<br>eg `<div style="display: grid; ..."> ... </div>`.
 * Learn some SVG and/or how to use canvas.
 * Learn how to represent data as JSON.
-* The `d3` package contains many useful building blocks for creating plots.
+* The [d3] package contains many useful building blocks for creating plots.
+    * [D3 in Depth](https://www.d3indepth.com/) by Peter Cook looks good to me.
 * It's ok not to use a framework. There are an infinite number of Javascript frameworks, and they are all constantly changing.
 
 
@@ -60,7 +60,14 @@ So we stick with the older style modules. These follow the ["module pattern"](ht
 I wonder if use of `file:///` will be further restricted in future. Data historians may need to be able to run a dumb HTTP or HTTPS server.
 
 
-### Running a dumb HTTP server
+## Tabular data
+
+The conventional R representation of tabular data is a list of vectors (i.e. a data frame or tibble). Each vector is a column.
+
+The conventional Javascript representation of tabular data is an array of objects. Each object is a row.
+
+
+## Running a dumb HTTP server
 
 The [servr] R package can be used to run a dumb HTTP server.
 
@@ -88,3 +95,4 @@ Could be made more efficient:
 [crosstalk]: https://rstudio.github.io/crosstalk/
 [r2d3]: https://rstudio.github.io/r2d3/
 [servr]: https://cran.rstudio.com/web/packages/servr/index.html
+[d3]: https://github.com/d3/d3
