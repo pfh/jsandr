@@ -3,3 +3,10 @@ template:
     bootstrap: 5
 home:
     title: "jsandr: smoothly working between Javascript and R"
+articles:
+- title: ""
+  navbar: ~
+  contents:
+  - articles/helloWorld
+  - articles/dependencies
+  - articles/examples
