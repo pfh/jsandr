@@ -1,5 +1,9 @@
 # jsandr
 
+```
+remotes::install_github("pfh/jsandr")
+```
+
 Early development. Smoothing out the process of letting R and Javascript work together. Features are opinionated, and subject to change.
 
 * [See articles for example usage.](https://logarithmic.net/jsandr/articles/)

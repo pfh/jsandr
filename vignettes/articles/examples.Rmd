@@ -18,7 +18,6 @@ library(crosstalk)
 library(htmltools)
 library(plotly)
 library(tidyverse)
-library(GGally)
 library(geozoo)
 library(langevitour)
 library(jsandr)
@@ -26,14 +25,14 @@ library(jsandr)
 df <- as.data.frame(conic.spiral.nautilus(n=5000, b=1)$points)
 shared <- SharedData$new(df)
 
-p1 <- ggplot(shared)+aes(x=V2,y=V1)+geom_point()
-p2 <- ggplot(shared)+aes(x=V2,y=V3)+geom_point()
+p1 <- ggplot(shared)+aes(x=V2,y=V1)+geom_point(size=0.5)
+p2 <- ggplot(shared)+aes(x=V2,y=V3)+geom_point(size=0.5)
 
 # Convert ggplot to plotly with talkToPlotly (with some tweaks compared to ggplotly)
 w1 <- talkToPlotly(p1, width="400", height="400")
 w2 <- talkToPlotly(p2, width="400", height="400")
 
-wLangevitour <- langevitour(df, link=shared, pointSize=2, width="500", height="600")
+wLangevitour <- langevitour(df, link=shared, width="500", height="600")
 
 # Tell Javascript the crosstalk group name.
 let1(groupName = shared$groupName())
