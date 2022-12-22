@@ -53,7 +53,7 @@ So we stick with the older style modules. These follow the ["module pattern"](ht
 
 `htmltools` (and tools built on top of it such as `rmarkdown`) can inline these "module pattern" modules, to ensure your HTML file is self-contained. Maybe one day `htmltools` or a successor will support inlining ES2015 modules.
 
-I wonder if use of `file:///` will be further restricted in future. Data historians may need to run a dumb HTTP or HTTPS server.
+I wonder if use of `file:///` will be further restricted in future. Data historians may need to run a static files HTTP or HTTPS server.
 
 
 ## Tabular data
@@ -67,9 +67,9 @@ A Javascript array is like an unnamed list in R, it can hold anything and is ind
 [d3] has [functions for manipulating arrays](https://github.com/d3/d3-array) which cover many common operations, eg grouped summaries are called a rollup.
 
 
-## Running a dumb HTTP server
+## Running a static files HTTP server
 
-The [servr] R package can be used to run a dumb HTTP server, serving static files.
+The [servr] R package can be used to run a simple HTTP server, serving static files.
 
 ```
 servr::httd()
