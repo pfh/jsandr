@@ -17,7 +17,7 @@ Typical sequence of events:
 3. HTML file loaded in browser. Javascript code runs as HTML is parsed.
 
 
-## R to know about
+## R things to know about
 
 * [shiny] is a client-server approach to using R with Javascript. Running a server in the long term is often difficult, so with `jsandr` I'm trying to help you get rid of the server where possible.
 * [htmltools] lets you create HTML from R. It also lets you include Javascript packages, and ensure they are only included once.
@@ -29,29 +29,37 @@ Typical sequence of events:
 * [r2d3] has similar goals to jsandr: making it easy to write Javascript widgets that work with R.
 
 
-## Javascript to know about
+## Javascript and web things to know about
 
 * Learn some HTML.
 * Learn some Javascript. Javascript has a long history with some mistakes along the way, but modern Javascript is pretty nice if you stick to the good bits.
     * [The Modern Javascript Tutorial](https://javascript.info/) by Ilya Kantor looks good to me.
     * Many tutorial websites exist if you want more hand-holding, such as [codecademy](https://www.codecademy.com/).
-* Learn some CSS styling to lay out your page. Grid layout using `<div>`s will be sufficient for many layout tasks. <br>eg `<div style="display: grid; ..."> ... </div>`.
-* Learn some SVG and/or how to use canvas.
 * Learn how to represent data as JSON.
-* The [d3] package contains many useful building blocks for creating plots.
+* Learn some CSS styling to lay out your page. 
+    * Learn the [box model](https://www.w3schools.com/css/css_boxmodel.asp).
+    * CSS `px` pixels units are a good unit to use, and will be fairly consistent across different screens. On high-DPI displays, a CSS pixel may be several real pixels.
+    * We don't necessarily need to write separate stylesheets, we can use styles inline in HTML, eg `<div style="...">`, or programmatically from Javascript.
+    * Grid layout will be sufficient for many layout tasks. <br>eg `<div style="display: grid; grid-template-columns: 200px 1fr 2fr;"> ...things to put in 3 columns... </div>`.
+* Learn to draw with SVG. 
+    * If you need to draw super fast and complicated things, also learn to use the canvas.
+* The [D3] package contains many useful building blocks for creating plots.
     * [D3 in Depth](https://www.d3indepth.com/) by Peter Cook looks good to me.
+    * [D3 API reference](https://github.com/d3/d3/blob/main/API.md)
 * It's ok not to use a framework. There are an infinite number of Javascript frameworks, and they are all constantly changing.
+
+[MDN](https://developer.mozilla.org/en-US/) provides detailed reference information, once you have the gist of what is going on.
 
 
 ## Javascript modules
 
-Modern Javascript now has "modules" (or "ES2015 modules") which work a bit differently to older style modules. However they [can not be used with `file:///`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules#other_differences_between_modules_and_standard_scripts) so are not suitable for creating interactive data artifacts that can be simply distributed as a set of files.
+Modern Javascript now has "modules" (aka "ECMAScript Modules", "ESM", "ES2015 modules") which work a bit differently to older style modules. However they [can not be used with `file:///`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules#other_differences_between_modules_and_standard_scripts) so are not suitable for creating interactive data artifacts that can be simply distributed as a set of files.
 
 So we stick with the older style modules. These follow the ["module pattern"](https://gist.github.com/ian-schu/8e768a27fdfc4f7197af31fbca3fa8d7), i.e. a pattern of writing code that isn't based on an explicit language feature for modules. You load these with `<script src="...some url..."></script>` and this generally has the effect of defining a new global variable containing all the functions and classes for the module.
 
 (Most such "module pattern" modules are compiled/translated from source code that uses newer language features. This doesn't affect how we use them.)
 
-`htmltools` (and tools built on top of it such as `rmarkdown`) can inline these "module pattern" modules, to ensure your HTML file is self-contained. Maybe one day `htmltools` or a successor will support inlining ES2015 modules.
+`htmltools` (and tools built on top of it such as `rmarkdown`) can inline these "module pattern" modules, to ensure your HTML file is self-contained. Maybe one day `htmltools` or a successor will support inlining ESM modules.
 
 I wonder if use of `file:///` will be further restricted in future. Data historians may need to run a static files HTTP or HTTPS server.
 
@@ -64,7 +72,7 @@ The conventional Javascript representation of tabular data is an array of object
 
 A Javascript array is like an unnamed list in R, it can hold anything and is indexed by numbers (0,1,2,...). A Javascript object is like a named list in R, it also can hold anything, is indexed by name, and the order of elements is usually not important.
 
-[d3] has [functions for manipulating arrays](https://github.com/d3/d3-array) which cover many common operations, eg grouped summaries are called a rollup.
+[D3] has [functions for manipulating arrays](https://github.com/d3/d3-array) which cover many common operations, eg grouped summaries are called a rollup.
 
 
 ## Running a static files HTTP server
@@ -88,7 +96,7 @@ Or use `python3 -m http.server`.
 * Results are a function of inputs. The state of the system is fully captured by the state of the inputs.
 * The simplest correct way to implement this is using an [idempotent] update function that is called any time an input changes. Finer grained options exist: multiple stages of update, libraries such as react.
 * When the user makes a selection, the "input" that defines the state is the selected items. The selected items should not change in response to other inputs. You might need to fight your tools to achieve this. [crosstalk] gets this right.
-    * Example: Suppose you have a rectangular selection, and then points are move in and out of the rectangle when other inputs change. The selected points should not change.
+    * Example: Suppose you have a rectangular selection, and then points move in and out of the rectangle when other inputs change. The selected points should not change.
 
 There is a reactive development principle "data down, actions up".
 
@@ -112,4 +120,4 @@ Could be made more efficient:
 [crosstalk]: https://rstudio.github.io/crosstalk/
 [r2d3]: https://rstudio.github.io/r2d3/
 [servr]: https://cran.rstudio.com/web/packages/servr/index.html
-[d3]: https://github.com/d3/d3
+[D3]: https://github.com/d3/d3

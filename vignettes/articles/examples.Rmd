@@ -1,8 +1,6 @@
 ---
-title: "Examples"
+title: "Crosstalk + Plotly + Javascript example"
 ---
-
-## Crosstalk and Javascript
 
 Here I demonstrate:
 
@@ -22,16 +20,21 @@ library(geozoo)
 library(langevitour)
 library(jsandr)
 
+# Example dataset
 df <- as.data.frame(conic.spiral.nautilus(n=5000, b=1)$points)
+
+# We can enable crosstalk between various widgets by
+# using a SharedData object in place of a data frame.
 shared <- SharedData$new(df)
 
 p1 <- ggplot(shared)+aes(x=V2,y=V1)+geom_point(size=0.5)
 p2 <- ggplot(shared)+aes(x=V2,y=V3)+geom_point(size=0.5)
 
-# Convert ggplot to plotly with talkToPlotly (with some tweaks compared to ggplotly)
+# Convert ggplot to plotly with talkToPlotly. 
 w1 <- talkToPlotly(p1, width="400", height="400")
 w2 <- talkToPlotly(p2, width="400", height="400")
 
+# Just for fun, use my widget too.
 wLangevitour <- langevitour(df, link=shared, width="500", height="600")
 
 # Tell Javascript the crosstalk group name.
@@ -41,14 +44,20 @@ let1(groupName = shared$groupName())
 Javascript code:
 
 ```{js}
+// The crosstalk group name lets us interact with selections and filters.
 let handle = new crosstalk.SelectionHandle();
 handle.setGroup(groupName);
 
+// Idempotent update function.
+// Make sure the displayed text matches the selection.
 function update() {
     document.getElementById("out").innerText = 'Javascript says: You\'ve selected '+(handle.value||[]).length+' points.';
 }
 
+// update function should be called when selection changes.
 handle.on("change", update);
+
+// update function should be called initially when the page is loaded.
 window.addEventListener("load", update);
 ```
 
@@ -62,3 +71,6 @@ browsable(div(
     ))
 ```
 
+* Why `browsable(...)`? It's not really necessary here, but in an interactive session it will make the HTML appear in the RStudio viewer pane or in a web browser, rather than the console.
+
+* What is the style doing? It sets the div up to display using "grid" layout. Since `grid-template-columns:` has two items, there will be two columns. The numbers `0fr` and `1fr` dictate the proportion of leftover space allocated to each column. You could also use other CSS units here such as `px`.

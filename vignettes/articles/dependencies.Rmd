@@ -28,7 +28,7 @@ document.write(JSON.stringify(
 
 ## Warning
 
-If you are using a commonly used module, and also using some htmlwidgets, you might accidentally load a different version of some module.
+If you are using a commonly used module, and also using some htmlwidgets, you might accidentally load two different versions of some module. When the second version of the module is loaded it will overwrite the first version, with potentially weird consequences for the widget and your own code.
 
 Check dependencies of a widget with `htmltools::findDependencies(widget)`.
 

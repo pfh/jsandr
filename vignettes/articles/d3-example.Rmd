@@ -1,0 +1,69 @@
+---
+title: "D3 example"
+---
+
+I first [look up D3 on npm](https://www.npmjs.com/package/d3). We'll get the package from cdn.jsdelivr.net, like they demonstrate in their documentation. However:
+
+* The latest version when I write this is 7.8.0, so for reproducibility I will specifically use this version.
+* Using `jsandr::depend` includes the package directly in the HTML file, making it self-contained. When someone views the HTML file they will not need access to cdn.jsdelivr.net. 
+
+```{r setup}
+library(jsandr)
+
+depend("https://cdn.jsdelivr.net/npm/d3@7.8.0")
+```
+
+Send some data to Javascript to play with.
+
+```{r}
+let(mtcars=mtcars)
+```
+
+Now we can write some Javascript.
+
+```{js}
+function update() {
+    let minMpg = parseFloat( document.getElementById("minMpg").value );
+    
+    let filteredCars = mtcars.filter(d => d.mpg>=minMpg);
+    
+    let xScale = d3.scaleLinear()
+        .domain([0,35])
+        .range([150,450]);
+        
+    let yScale = d3.scaleBand()
+        .domain(filteredCars.map(d=>d._row))
+        .range([0,450])
+        .padding(0.2);
+    
+    d3.select("#xAxis")
+        .attr("transform",`translate(0,${yScale.range()[1]})`)
+        .call( d3.axisBottom(xScale) );
+    
+    d3.select("#yAxis")
+        .attr("transform",`translate(${xScale.range()[0]},0)`)
+        .call( d3.axisLeft(yScale).tickSizeOuter(0) );
+    
+    d3.select("#bars")
+        .selectAll("rect")
+        .data(filteredCars, d=>d._row)
+        .join("rect")
+        .attr("fill", "#88f")
+        .attr("x", xScale(0))
+        .attr("width", d=>xScale(d.mpg)-xScale(0))
+        .attr("y", d=>yScale(d._row))
+        .attr("height", yScale.bandwidth());
+}
+
+window.addEventListener("load", update);
+```
+
+## Miles Per Gallon
+
+Minimum MPG: <input type="number" id="minMpg" min="0" max="35" step="5" value="10" onchange="update()">
+
+<svg id="output" width="500" height="500">
+    <g id="bars"></g>
+    <g id="xAxis"></g>
+    <g id="yAxis"></g>
+</svg>

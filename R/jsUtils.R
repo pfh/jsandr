@@ -58,7 +58,13 @@ let1 <- function(...) {
 #' An empty \code{htmltools::tagList} that depends on the specified URL. Creates the dependency when it is printed in an rmarkdown document.
 #'
 #' @examples
+#' \dontrun{
+#'
+#' depend("https://cdn.jsdelivr.net/npm/d3@7.8.0")
+#'
 #' depend("https://unpkg.com/svd-js@1.1.1/build-umd/svd-js.min.js")
+#'
+#' }
 #'
 #' @export
 depend <- function(url, name=NULL, version=NULL) {
@@ -87,34 +93,4 @@ depend <- function(url, name=NULL, version=NULL) {
             script=destFile, all_files=FALSE))
 }
 
-
-#' Depend on D3
-#'
-#' Use a version of D3 included in r2d3.
-#'
-#' @param ... Parameters for \code{r2d3::html_dependencies_d3}.
-#'
-#' @examples
-#' dependD3()
-#'
-#' @export
-dependD3 <- function(...) {
-    htmltools::tagList( r2d3::html_dependencies_d3(...) )
-}
-
-
-#' Depend on plotly
-#'
-#' Extracts the dependency from the plotly R package.
-#'
-#' @examples
-#' dependPlotly()
-#'
-#' @export
-dependPlotly <- function() {
-    htmltools::tagList( plotly:::plotlyMainBundle() )
-}
-
-
-# dependCrosstalk()
 

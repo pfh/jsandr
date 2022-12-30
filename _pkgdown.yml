@@ -9,4 +9,5 @@ articles:
   contents:
   - articles/helloWorld
   - articles/dependencies
+  - articles/d3-example
   - articles/examples

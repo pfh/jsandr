@@ -27,6 +27,12 @@ If you're using the same package as some widget, make sure you use the same name
 The file cache directory is chosen using \code{rappdirs::user_cache_dir("jsandr")}.
 }
 \examples{
+\dontrun{
+
+depend("https://cdn.jsdelivr.net/npm/d3@7.8.0")
+
 depend("https://unpkg.com/svd-js@1.1.1/build-umd/svd-js.min.js")
+
+}
 
 }
